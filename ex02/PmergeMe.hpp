@@ -4,11 +4,27 @@
 # include <iostream>
 # include <vector>
 # include <deque>
-# include <cstdlib>
-# include <algorithm>
-# include <ctime>
 # include <sstream>
 # include <stdexcept>
+# include <cstdlib>
+# include <ctime>
+# include <climits>
+# include <algorithm>
+#include <iomanip>
+
+struct s_vec_item
+{
+	int		value;
+	int		bound;
+	bool	has_bound;
+};
+
+struct s_deq_item
+{
+	int		value;
+	int		bound;
+	bool	has_bound;
+};
 
 class PmergeMe
 {
@@ -16,11 +32,33 @@ class PmergeMe
 		std::vector<int>	_vector;
 		std::deque<int>		_deque;
 
-		void	mergeInsertSortVector(std::vector<int> &vec);
-		void	mergeInsertSortDeque(std::deque<int> &deq);
+		double				_vector_time;
+		double				_deque_time;
 
-		void	mergeVector(std::vector<int> &left, std::vector<int> &right, std::vector<int> &result);
-		void	mergeDeque(std::deque<int> &left, std::deque<int> &right, std::deque<int> &result);
+		void				parseInput(char **argv);
+		int					parseNumber(const std::string &str) const;
+
+		void				printBefore() const;
+		void				printAfter() const;
+
+		void				sortVector();
+		void				sortDeque();
+
+		void				fordJohnsonVector(std::vector<int> &container);
+		void				fordJohnsonDeque(std::deque<int> &container);
+
+		std::vector<size_t>	buildJacobOrderVector(size_t size) const;
+		std::deque<size_t>	buildJacobOrderDeque(size_t size) const;
+
+		void				insertPendVector(std::vector<int> &main_chain,std::vector<s_vec_item> &pend);
+
+		void				insertPendDeque(std::deque<int> &main_chain,std::deque<s_deq_item> &pend);
+
+		std::vector<int>::iterator	boundVector(std::vector<int> &main_chain,const s_vec_item &item);
+
+        std::deque<int>::iterator	boundDeque(std::deque<int> &main_chain,const s_deq_item &item);
+
+		void				printTimes() const;
 
 	public:
 		PmergeMe();
@@ -28,13 +66,7 @@ class PmergeMe
 		PmergeMe &operator=(const PmergeMe &other);
 		~PmergeMe();
 
-		void	parseInput(char **argv);
-
-		void	sortVector();
-		void	sortDeque();
-
-		void	printBefore() const;
-		void	printAfter() const;
+		void				run(char **argv);
 };
 
 #endif
